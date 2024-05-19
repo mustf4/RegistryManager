@@ -1,1 +1,1 @@
-# RegistryWorker
+# RegistryManager
