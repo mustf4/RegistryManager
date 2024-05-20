@@ -70,7 +70,7 @@ namespace RegistryManager
             return value;
         }
 
-        protected bool SetRegistryValue<T>(string subKey, string name, T value, RegistryValueKind valueKind = RegistryValueKind.String, bool cache = false)
+        protected bool SetRegistryValue<T>(string subKey, string name, T value, RegistryValueKind valueKind = RegistryValueKind.DWord, bool cache = false)
         {
             bool result = false;
             string cacheKey = GetCacheKey(subKey, name);
@@ -180,7 +180,7 @@ namespace RegistryManager
                             result = (TR)(object)guidResult;
                         break;
                     default:
-                        result = (TR)value;
+                        result = (TR)Convert.ChangeType(value, typeof(TR));
                         break;
                 }
             }
@@ -248,7 +248,7 @@ namespace RegistryManager
         private class CacheModel
         {
             public object Value { get; set; }
-            public DateTime UpdatedDate { get; set; } = DateTime.UtcNow;
+            public DateTime UpdatedDate { get; set; } = DateTime.Now;
 
             public CacheModel(object value) => Value = value;
         }
