@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MultitaskScheduler.ConsoleTest")]
+[assembly: AssemblyTitle("RegistryManager.Common")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MultitaskScheduler.ConsoleTest")]
+[assembly: AssemblyProduct("RegistryManager.Common")]
 [assembly: AssemblyCopyright("Copyright ©  2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("df97a737-926a-48a9-8b0a-624a81ba90bb")]
+[assembly: Guid("b205ef05-8ada-41c8-90f4-0d04b7910a18")]
 
 // Version information for an assembly consists of the following four values:
 //

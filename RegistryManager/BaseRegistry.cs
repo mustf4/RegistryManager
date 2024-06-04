@@ -1,12 +1,10 @@
 ﻿using Microsoft.Win32;
-using MultitaskScheduler;
 using System;
-using System.Collections.Concurrent;
 using System.Text.Json;
 
 namespace RegistryManager
 {
-    public abstract class BaseRegistry
+    public abstract partial class BaseRegistry
     {
         private static bool? _is64BitOperatingSystem = null;
 
@@ -36,30 +34,28 @@ namespace RegistryManager
 
                 using (RegistryKey registryKey = RegistryKey.OpenBaseKey(GetRegistryHive(), GetRegistryView()).OpenSubKey(subKey, createIfNotExist))
                 {
+                    object registryValue = null;
+
                     if (registryKey != null)
                     {
-                        object registryValue;
                         if (createIfNotExist)
                         {
                             registryValue = registryKey.GetValue(name, "-1");
                             if (string.Equals(registryValue.ToString(), "-1"))
-                            {
-                                TR defaultForType = defaultValue;
-                                if (defaultValue == null)
-                                    defaultForType = (TR)(object)string.Empty;
-
-                                SetRegistryValue(subKey, name, defaultForType, valueKind, cache);
-                                registryValue = defaultForType;
-                            }
+                                registryValue = CreateRegistryValue(subKey, name, defaultValue, cache, valueKind);
                         }
                         else
                             registryValue = registryKey.GetValue(name, defaultValue);
-
-                        value = registryValue == null ? defaultValue : ParseValue(registryValue, defaultValue);
-
-                        if (cache)
-                            RegistryCache.AddValue(cacheKey, value);
                     }
+                    else if (createIfNotExist)
+                    {
+                        registryValue = CreateRegistryValue(subKey, name, defaultValue, cache, valueKind);
+                    }
+
+                    value = registryValue == null ? defaultValue : ParseValue(registryValue, defaultValue);
+
+                    if (cache)
+                        RegistryCache.AddValue(cacheKey, value);
                 }
             }
             catch (Exception ex)
@@ -68,6 +64,16 @@ namespace RegistryManager
             }
 
             return value;
+        }
+
+        private object CreateRegistryValue<TR>(string subKey, string name, TR defaultValue, bool cache, RegistryValueKind valueKind)
+        {
+            TR defaultForType = defaultValue;
+            if (defaultValue == null)
+                defaultForType = (TR)(object)string.Empty;
+
+            SetRegistryValue(subKey, name, defaultForType, valueKind, cache);
+            return defaultForType;
         }
 
         protected bool SetRegistryValue<T>(string subKey, string name, T value, RegistryValueKind valueKind = RegistryValueKind.DWord, bool cache = false)
@@ -195,62 +201,6 @@ namespace RegistryManager
         private static RegistryView GetRegistryView()
         {
             return Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32;
-        }
-
-        private static class RegistryCache
-        {
-            private static readonly int _timeoutMinutes = 60;
-            private static readonly Scheduler _scheduler = Scheduler.Factory.CreateNew("Registry Scheduler");
-            private static readonly ConcurrentDictionary<string, CacheModel> _values = new ConcurrentDictionary<string, CacheModel>();
-
-            static RegistryCache()
-            {
-                _scheduler.ScheduleJob("Caching", 10, CleanupByTimeout);
-            }
-
-            public static void AddValue<T>(string key, T value)
-            {
-                _values.AddOrUpdate(key, new CacheModel(value), (s, v) =>
-                {
-                    v.Value = value;
-                    return v;
-                });
-            }
-
-            public static TR GetValue<TR>(string key)
-            {
-                if (_values.TryGetValue(key, out CacheModel cacheModel))
-                {
-                    return (TR)cacheModel.Value;
-                }
-
-                return default;
-            }
-
-            public static bool ContainsKey(string key)
-            {
-                return _values.ContainsKey(key);
-            }
-
-            private static void CleanupByTimeout()
-            {
-                DateTime currentDate = DateTime.Now;
-
-                foreach (var current in _values)
-                {
-                    CacheModel cacheModel = current.Value;
-                    if (cacheModel.UpdatedDate < currentDate.AddMinutes(-_timeoutMinutes))
-                        _values.TryRemove(current.Key, out _);
-                }
-            }
-        }
-
-        private class CacheModel
-        {
-            public object Value { get; set; }
-            public DateTime UpdatedDate { get; set; } = DateTime.Now;
-
-            public CacheModel(object value) => Value = value;
         }
     }
 }

@@ -69,12 +69,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LocalMachine.cs" />
-    <Compile Include="Reg.cs" />
+    <Compile Include="Models\CacheModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BaseRegistry.cs" />
-    <Compile Include="RegName.cs" />
-    <Compile Include="RegSubKey.cs" />
+    <Compile Include="RegistryCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DF97A737-926A-48A9-8B0A-624A81BA90BB}</ProjectGuid>
+    <ProjectGuid>{F1E5FA5D-993C-4574-B187-BFC651DDA673}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MultitaskScheduler.ConsoleTest</RootNamespace>
-    <AssemblyName>MultitaskScheduler.ConsoleTest</AssemblyName>
+    <RootNamespace>RegistryManager.ConsoleTest</RootNamespace>
+    <AssemblyName>RegistryManager.ConsoleTest</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -50,9 +50,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RegistryManager\RegistryManager.csproj">
-      <Project>{635ac257-9625-46fb-8930-28e7689618b9}</Project>
-      <Name>RegistryManager</Name>
+    <ProjectReference Include="..\RegistryManager.Common\RegistryManager.Common.csproj">
+      <Project>{b205ef05-8ada-41c8-90f4-0d04b7910a18}</Project>
+      <Name>RegistryManager.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

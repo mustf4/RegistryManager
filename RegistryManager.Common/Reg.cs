@@ -1,4 +1,4 @@
-﻿namespace RegistryManager
+﻿namespace RegistryManager.Common
 {
     public class Reg
     {

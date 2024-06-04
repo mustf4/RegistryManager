@@ -1,7 +1,8 @@
-﻿using RegistryManager;
+﻿using RegistryManager.Common;
+using RegistryManager.Common.Models;
 using System;
 
-namespace MultitaskScheduler.ConsoleTest
+namespace RegistryManager.ConsoleTest
 {
     internal class Program
     {
@@ -10,6 +11,7 @@ namespace MultitaskScheduler.ConsoleTest
             bool platformSupportMiracast = Reg.LocalMachine.PlatformSupportMiracast;
             string productName = Reg.LocalMachine.ProductName;
             Guid oSProductContentId = Reg.LocalMachine.OSProductContentId;
+            Configuration configuration = Reg.LocalMachine.ManagerConfiguration;
         }
     }
 }
