@@ -1,5 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 
 namespace RegistryManager
@@ -184,6 +186,9 @@ namespace RegistryManager
                     case Type _ when type == typeof(Guid):
                         if (Guid.TryParse(value.ToString(), out Guid guidResult))
                             result = (TR)(object)guidResult;
+                        break;
+                    case Type _ when type == typeof(List<string>):
+                        result = (TR)(object)((string[])value).ToList();
                         break;
                     default:
                         result = (TR)Convert.ChangeType(value, typeof(TR));
